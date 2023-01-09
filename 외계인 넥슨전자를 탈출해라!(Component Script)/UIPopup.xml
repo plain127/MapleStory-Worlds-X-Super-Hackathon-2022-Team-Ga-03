@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="15873444-8d16-4d28-9091-9c623fda5224" Language="Lua" Name="UIPopup" Type="Logic" Source="None" ModifyTime="2022-09-29T23:08:02.4207098+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="1" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="message" Type="Component" DefaultValue="3606e39d-32de-427e-8d23-b38af810a3b4:52" SyncDirection="None" />
+    <CodeBlockProperty Name="btnOk" Type="Component" DefaultValue="94a274e4-4111-40f1-924d-c95a3a1f14d5:9" SyncDirection="None" />
+    <CodeBlockProperty Name="btnCancel" Type="Component" DefaultValue="0f5de49b-2adc-409a-816d-15aa43df8e0d:9" SyncDirection="None" />
+    <CodeBlockProperty Name="popupGroup" Type="Entity" DefaultValue="fb7a3b06-7026-4590-8efe-bb33416dd8f9" SyncDirection="None" />
+    <CodeBlockProperty Name="popup" Type="Entity" DefaultValue="aa954759-0e39-430f-85fa-80bf2e5fe31d" SyncDirection="None" />
+    <CodeBlockProperty Name="onOk" Type="any" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="onCancel" Type="any" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="duration" Type="number" DefaultValue="0.15" SyncDirection="None" />
+    <CodeBlockProperty Name="from" Type="number" DefaultValue="0.5" SyncDirection="None" />
+    <CodeBlockProperty Name="to" Type="number" DefaultValue="1" SyncDirection="None" />
+    <CodeBlockProperty Name="isOpen" Type="boolean" DefaultValue="false" SyncDirection="None" />
+    <CodeBlockProperty Name="isTweenPlaying" Type="boolean" DefaultValue="false" SyncDirection="None" />
+    <CodeBlockProperty Name="tweenEventId" Type="number" DefaultValue="0" SyncDirection="None" />
+    <CodeBlockProperty Name="okHandler" Type="any" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="cancelHandler" Type="any" DefaultValue="nil" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="Open" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="message" Type="string" SyncDirection="None" />
+        <CodeBlockProperty Name="onOk" Type="any" SyncDirection="None" />
+        <CodeBlockProperty Name="onCancel" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self.isOpen == true then
+	return
+end
+self.isOpen = true
+self.popupGroup.Enable = true
+self.message.Text = message
+self.onOk = onOk
+self.onCancel = onCancel
+
+
+self.okHandler = self.btnOk.Entity:ConnectEvent(ButtonClickEvent,self.OnClickOk)
+self.cancelHandler = self.btnCancel.Entity:ConnectEvent(ButtonClickEvent,self.OnClickCancel)
+self:StartTween(true)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnClickOk" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+if self.isTweenPlaying == true then
+	return
+end
+if self.onOk ~= nil then
+	self.onOk()
+	self.onOk = nil
+end
+self:Close()
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnClickCancel" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+if self.isTweenPlaying == true then
+	return
+end
+if self.onCancel ~= nil then
+	self.onCancel()
+	self.onCancel = nil
+end
+self:Close()
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="Close" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.btnOk.Entity:DisconnectEvent(ButtonClickEvent,self.okHandler)
+self.btnCancel.Entity:DisconnectEvent(ButtonClickEvent,self.cancelHandler)
+self:StartTween(false)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="StartTween" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="open" Type="boolean" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+
+local transform = self.popup.UITransformComponent
+local canvasGroup = self.popupGroup.CanvasGroupComponent 
+if open == true then
+	canvasGroup.GroupAlpha = 0
+	transform.UIScale = Vector3(self.from,self.from,1)
+else
+	transform.UIScale = Vector3(self.to,self.to,1)
+end
+self.isTweenPlaying = true
+local time = 0
+
+
+local preTime = _UtilLogic.ElapsedSeconds
+
+local tween = function()
+	local delta = _UtilLogic.ElapsedSeconds - preTime
+	time = time + delta
+	local timeValue = time	
+	preTime = _UtilLogic.ElapsedSeconds
+
+	if time >= self.duration then
+		timeValue = self.duration
+		if open == false then
+			self.popupGroup.Enable = false
+			self.isOpen = false
+		end
+		self.isTweenPlaying = false
+		_TimerService:ClearTimer(self.tweenEventId)
+
+	end
+	if open == false then
+		timeValue = self.duration - timeValue
+	end
+	local tweenValue = _TweenLogic:Ease(self.from, self.to, 
+		self.duration, EaseType.SineEaseIn, timeValue)
+	transform.UIScale = Vector3(tweenValue,tweenValue,1)
+	canvasGroup.GroupAlpha = timeValue / self.duration
+end
+self.tweenEventId = _TimerService:SetTimerRepeat(tween,1/60)
+
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

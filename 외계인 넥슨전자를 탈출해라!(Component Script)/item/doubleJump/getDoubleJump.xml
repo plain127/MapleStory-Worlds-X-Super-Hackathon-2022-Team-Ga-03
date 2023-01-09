@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="bf33cebc-1b19-4ecc-b529-b9c5ce547abb" Language="Lua" Name="getDoubleJump" Type="Component" Source="None" ModifyTime="2022-11-12T03:17:40.6067399+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnMapEnter" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="enteredMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local item = _EntityService:GetEntitiesByTag("Item")
+for key, value in pairs(item) do
+	value.Enable = true
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.Entity.TagComponent:AddTag("Item")
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity.Id == _UserService.LocalPlayer.Id then
+	self.Entity.Enable = false
+	TriggerBodyEntity.DoubleJump.MyEnable = true
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="6bd64af0-014e-4326-bf63-adde9d5f3530" Language="Lua" Name="UIMyInfoSimple" Type="Component" Source="None" ModifyTime="2022-10-04T22:55:16.7717089+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="myName" Type="Component" DefaultValue=":52" SyncDirection="None" />
+    <CodeBlockProperty Name="myHP" Type="Component" DefaultValue=":43" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+local currentPath = self.Entity.Path
+self.myName = _EntityService:GetEntityByPath(currentPath .. "/Text_name").TextComponent
+self.myHP = _EntityService:GetEntityByPath(currentPath .. "/HP_bar").SliderComponent
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if _UserService.LocalPlayer == nil then
+	return
+end
+local player = _UserService.LocalPlayer.PlayerComponent
+if player == nil then
+	return
+end
+self.myName.Text = player.Nickname
+self.myHP.Value = player.Hp / player.MaxHp
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

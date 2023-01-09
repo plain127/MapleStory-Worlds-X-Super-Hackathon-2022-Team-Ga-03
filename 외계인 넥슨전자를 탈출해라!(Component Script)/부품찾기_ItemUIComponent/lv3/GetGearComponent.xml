@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="a5d0d077-d8d7-48f5-9d3a-4b36f5d2e18e" Language="Lua" Name="GetGearComponent" Type="Component" Source="None" ModifyTime="2022-11-26T23:00:29.4885989+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="gearNum" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+--local userData = _DataStorageService:GetUserDataStorage(self.Entity.PlayerComponent.UserId)
+--local callBack = function(e,k,v)
+	--if v == nil then v = 0 end
+	--if k == "Gear" then
+		--self.gearNum = tonumber(v) end
+--end
+--userData:GetAsync("Gear", callBack)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="SaveGear" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local userData = _DataStorageService:GetUserDataStorage(self.Entity.PlayerComponent.UserId)
+local callBack = function(e,k)
+	log(k.." 값이 저장되었습니다.")
+end
+userData:SetAsync("Gear", tostring(self.gearNum), callBack)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddGear" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.gearNum = self.gearNum + 1
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

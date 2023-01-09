@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="4dd53e97-6896-4d15-ae42-e1c7fe42c016" Language="Lua" Name="RemoveObstacle" Type="Component" Source="None" ModifyTime="2022-11-23T16:33:50.1695824+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity == _UserService.LocalPlayer then
+	self.Entity.Enable = false
+end
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="fdd5fdd7-adfd-4d49-b136-39b699cc8227" Language="Lua" Name="Lv1UIComponent" Type="Component" Source="None" ModifyTime="2022-11-20T01:38:42.8590325+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Food" Type="Component" DefaultValue="66e36db0-bacb-4c70-b107-9b943ccb628a:TextComponent" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.Food.Text = tostring("X  "..math.floor(self.Entity.GetFoodComponent.foodNum))
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

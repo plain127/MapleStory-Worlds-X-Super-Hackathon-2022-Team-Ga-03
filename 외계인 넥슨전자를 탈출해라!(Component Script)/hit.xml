@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="53366634-32c2-409a-8c30-09a741cf5bd8" Language="Lua" Name="hit" Type="Extend" Source="None" Target="MOD.Core.HitComponent" ModifyTime="2022-11-19T00:49:19.1839096+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnHit" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="attacker" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="damage" Type="int" SyncDirection="None" />
+        <CodeBlockProperty Name="isCritical" Type="boolean" SyncDirection="None" />
+        <CodeBlockProperty Name="attackInfo" Type="string" SyncDirection="None" />
+        <CodeBlockProperty Name="hitCount" Type="int" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+_EntityService:Destroy(self.Entity)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

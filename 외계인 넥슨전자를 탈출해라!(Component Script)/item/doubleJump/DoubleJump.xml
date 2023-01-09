@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="bd99f7e1-df27-4d37-9415-5aeb7b280829" Language="Lua" Name="DoubleJump" Type="Component" Source="None" ModifyTime="2022-11-12T02:30:33.7674755+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="JumpState" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="DoubleJump" Type="boolean" DefaultValue="true" SyncDirection="All" />
+    <CodeBlockProperty Name="MyEnable" Type="boolean" DefaultValue="false" SyncDirection="None" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if self.MyEnable == true then
+	if key == KeyboardKey.LeftAlt and self.JumpState == false then
+		self.JumpState = true
+	elseif key == KeyboardKey.LeftAlt and self.JumpState == true and self.DoubleJump == true then
+		self.DoubleJump = false
+		self.Entity.RigidbodyComponent:SetForce(Vector2(3*self.Entity.PlayerControllerComponent.LookDirectionX,3))
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleFootholdCollisionEvent" EventName="FootholdCollisionEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local FootholdNormal = event.FootholdNormal
+local ImpactDir = event.ImpactDir
+local ImpactForce = event.ImpactForce
+local ReflectDir = event.ReflectDir
+local Rigidbody = event.Rigidbody
+--------------------------------------------------------
+if self.MyEnable == true then
+	self.DoubleJump = true
+	self.JumpState = false
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

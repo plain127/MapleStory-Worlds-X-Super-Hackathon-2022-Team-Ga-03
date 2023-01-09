@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="8c24bee7-2f20-4e90-9fc0-b88a2c499a63" Language="Lua" Name="hitbox" Type="Component" Source="None" ModifyTime="2022-11-19T00:30:09.9373802+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="state" Type="boolean" DefaultValue="true" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local item = _EntityService:GetEntityByPath("/maps/부품찾기_LV2/mapItem_1_14") --아이템path
+local spawnPosition = self.Entity.TransformComponent.Position
+if self.state == false then
+	self.Entity:Destroy()
+	local spawnEntity = _SpawnService:SpawnByEntity(item,'item',spawnPosition)
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleHitEvent" EventName="HitEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+self.Entity:RemoveComponent("Hitcomponent")
+
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

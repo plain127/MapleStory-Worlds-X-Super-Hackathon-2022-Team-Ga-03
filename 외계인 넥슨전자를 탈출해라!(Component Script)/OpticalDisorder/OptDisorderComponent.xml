@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="2fcba369-aa2d-4103-a2dd-4c43af37d5eb" Language="Lua" Name="OptDisorderComponent" Type="Component" Source="None" ModifyTime="2022-11-26T21:08:56.9498592+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="ODDuration" Type="number" DefaultValue="3000" SyncDirection="None" />
+    <CodeBlockProperty Name="Lucid" Type="Entity" DefaultValue="9a3d7fc5-e7df-4f42-bc90-0deab422c181" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OptDisOn" ExecSpace="Client">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="UserId" Type="string" DefaultValue="&quot;&quot;" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self._T.OD ~= nil or _UserService.LocalPlayer.PlayerComponent.UserId ~= UserId then
+	return
+end
+self._T.OD = _SpawnService:SpawnByModelId("model://51c7f5ff-b395-48ec-90a2-78a9dc61378a","OD",Vector3.zero,_UserService.LocalPlayer)
+
+if self._T.OT ~= nil then
+	_TimerService:ClearTimer(self._T.OT)
+	self._T.OT = nil
+end
+
+local tf = function()
+	self:OptDisOff()
+	self._T.OT = nil
+end
+self._T.OT = _TimerService:SetTimerOnce(tf,self.ODDuration)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OptDisOff" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+if self._T.OD == nil then
+	return
+end
+self._T.OD:Destroy()
+self._T.OD = nil
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local lucidside = self.Lucid.SpriteRendererComponent.FlipX
+if lucidside == true then --맵을 떠날때 FlipX가 true가 되기때문에 update가 안되나
+	self:OptDisOff()
+else self:OptDisOn(_UserService.LocalPlayer.PlayerComponent.UserId)
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

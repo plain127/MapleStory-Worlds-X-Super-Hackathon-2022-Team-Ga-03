@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="946884ac-4ce2-46b6-8f60-e9ca9d4a96f4" Language="Lua" Name="Lv3UIInsert" Type="Component" Source="None" ModifyTime="2022-11-20T01:34:11.9264117+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local ItemCounter = _EntityService:GetEntityByPath("/ui/DefaultGroup/ItemCounter_부품찾기3")
+ItemCounter:SetEnable(true)
+ItemCounter:SetVisible(true)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

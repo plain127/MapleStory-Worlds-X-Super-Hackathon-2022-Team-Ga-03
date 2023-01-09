@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="14ce971b-d1cf-477c-9051-43b5d383f402" Language="Lua" Name="Lv2CreatePortal" Type="Component" Source="None" ModifyTime="2022-11-27T03:28:40.6552358+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="max" Type="number" DefaultValue="8" SyncDirection="All" />
+    <CodeBlockProperty Name="toastOnce" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local myPlayerEntity = _UserService.LocalPlayer
+local mmapNum = myPlayerEntity.GetMmapComponent.mmapNum
+
+if mmapNum == self.max then
+	local itemEntity = _EntityService:GetEntity("d67f865c-977a-4f52-974f-a48b5689111e")
+	itemEntity:SetVisible(true, true)
+	itemEntity:SetEnable(true, true)
+	
+	local toast = _EntityService:GetEntityByPath("/ui/ToastGroup/Toast_portal")
+	toast:SetEnable(true)
+	toast:SetVisible(true)
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnEndPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local toastGroup = _EntityService:GetEntityByPath("/ui/ToastGroup")
+toastGroup:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

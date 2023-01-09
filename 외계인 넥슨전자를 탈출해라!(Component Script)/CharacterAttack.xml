@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="afdac97d-59e9-4af6-bf61-d79885f0d7a0" Language="Lua" Name="CharacterAttack" Type="Extend" Source="None" Target="MOD.Core.AttackComponent" ModifyTime="2022-11-17T15:36:24.4272232+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="NormalAttack" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local attackSize = Vector2(1,1)
+local attackOffset = Vector2(0,0)
+
+self:Attack(attackSize,attackOffset,nil)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="CalcDamage" ExecSpace="All">
+      <Return Type="int" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="attacker" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="defender" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="attackInfo" Type="string" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+return 1000
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="IsAttackTarget" ExecSpace="All">
+      <Return Type="boolean" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="defender" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="attackInfo" Type="string" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+return true
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandlePlayerActionEvent" EventName="PlayerActionEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local ActionName = event.ActionName
+local PlayerEntity = event.PlayerEntity
+--------------------------------------------------------
+local ActonName = event.ActionName
+
+if ActionName == "Attack" then
+	self:NormalAttack()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

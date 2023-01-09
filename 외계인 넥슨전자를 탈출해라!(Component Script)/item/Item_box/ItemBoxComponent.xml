@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="32340fb2-35cc-45fc-9bce-b3006186cfb2" Language="Lua" Name="ItemBoxComponent" Type="Component" Source="None" ModifyTime="2022-11-19T00:36:07.6859811+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local state = self.Entity.StateComponent
+
+state:AddState("BROKEN", BrokenBox)
+state:AddCondition("BROKEN", "DEAD")
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleStateChangeEvent" EventName="StateChangeEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local CurrentStateName = event.CurrentStateName
+local PrevStateName = event.PrevStateName
+--------------------------------------------------------
+if self:IsServer() then
+	if CurrentStateName == "HIT" then
+		self.Entity.StateComponent:ChangeState("BROKEN")
+	elseif CurrentStateName == "DEAD" then
+		_TimerService:SetTimerOnce(function()
+self.Entity.StateComponent:ChangeState("IDLE") end, 5)
+	end
+else
+	if CurrentStateName == "IDLE" then
+		self.Entity.SpriteRendererComponent.Color.a = 1
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleSpriteAnimPlayerEndFrameEvent" EventName="SpriteAnimPlayerEndFrameEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local FrameIndex = event.FrameIndex
+local ReversePlaying = event.ReversePlaying
+local TotalFrameCount = event.TotalFrameCount
+local AnimPlayer = event.AnimPlayer
+--------------------------------------------------------
+if TotalFrameCount > 1 then
+	self.Entity.SpriteRendererComponent.Color.a = 0 
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

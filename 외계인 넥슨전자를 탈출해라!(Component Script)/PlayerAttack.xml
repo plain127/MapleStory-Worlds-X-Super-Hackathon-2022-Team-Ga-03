@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="148dcda4-f444-447b-8c8b-4cce298dffb4" Language="Lua" Name="PlayerAttack" Type="Extend" Source="None" Target="MOD.Core.AttackComponent" ModifyTime="2022-11-19T01:27:02.2259277+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self._T.shape = BoxShape(Vector2.zero,Vector2.one,0)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AttackNormal" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local playerController = self.Entity.PlayerControllerComponent
+local transform = self.Entity.TransformComponent
+if playerController and transform then
+	local worldPosition = transform.WorldPosition
+	local attackOffset = Vector2(worldPosition.x + 0.5 +playerController.LookDirectionX,worldPosition.y+0.5)
+	self._T.shape.Position = attackOffset
+	
+	self:AttackFast(self._T.shape,nil,CollisionGroups.Monster)
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="CalcDamage" ExecSpace="All">
+      <Return Type="int" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="attacker" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="defender" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="attackInfo" Type="string" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+return 50
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="CalcCritical" ExecSpace="All">
+      <Return Type="boolean" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="attacker" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="defender" Type="Entity" SyncDirection="None" />
+        <CodeBlockProperty Name="attackInfo" Type="string" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+return _UtilLogic:RandomDouble()<0.3
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="GetCriticalDamageRate" ExecSpace="All">
+      <Return Type="number" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+return 2
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandlePlayerActionEvent" EventName="PlayerActionEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local ActionName = event.ActionName
+local PlayerEntity = event.PlayerEntity
+--------------------------------------------------------
+if self:IsClient() then return end
+
+if ActionName == "Attack" then
+	self:AttackNormal()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

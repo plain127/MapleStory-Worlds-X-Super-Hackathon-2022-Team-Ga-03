@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="3d371c14-e6e2-488e-aa5d-9f10140d5f19" Language="Lua" Name="Lv2UIComponent" Type="Component" Source="None" ModifyTime="2022-11-23T11:25:44.3633244+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Mmap" Type="Component" DefaultValue="4d3ec014-3f8f-40d3-811d-36cec3e20158:TextComponent" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.Mmap.Text = tostring("X  "..math.floor(self.Entity.GetMmapComponent.mmapNum))
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

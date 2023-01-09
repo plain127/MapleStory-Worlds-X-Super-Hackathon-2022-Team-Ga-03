@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="f4758da4-8592-4924-b1c0-ea7686f78607" Language="Lua" Name="Chaser1" Type="Component" Source="None" ModifyTime="2023-01-08T22:00:08.2456539+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="NewValue1" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity == _UserService.LocalPlayer then
+	TriggerBodyEntity.TriggerComponent.Enable = false
+	TriggerBodyEntity.StateComponent:ChangeState("DEAD")
+	
+	wait(3)
+	_TeleportService:TeleportToEntityPath(TriggerBodyEntity,"/maps/술래잡기_LV1/SpawnLocation")
+	TriggerBodyEntity.StateComponent:ChangeState("IDLE")
+	TriggerBodyEntity.TriggerComponent.Enable = true
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="aea47ab0-42a4-45e1-8d73-cafdadd1aaca" Language="Lua" Name="GetSkill" Type="Component" Source="None" ModifyTime="2022-11-08T20:20:37.0430931+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers />
+</CodeBlockFile>

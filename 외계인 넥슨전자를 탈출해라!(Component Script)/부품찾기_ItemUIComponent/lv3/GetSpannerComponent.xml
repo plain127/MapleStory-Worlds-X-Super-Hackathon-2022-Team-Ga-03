@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="f2a6f444-cbf7-4e3a-95ae-ab22917626fd" Language="Lua" Name="GetSpannerComponent" Type="Component" Source="None" ModifyTime="2022-11-26T23:00:35.9148539+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="spannerNum" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+--local userData = _DataStorageService:GetUserDataStorage(self.Entity.PlayerComponent.UserId)
+--local callBack = function(e,k,v)
+	--if v == nil then v = 0 end
+	--if k == "Spanner" then
+		--self.spannerNum = tonumber(v) end
+--end
+--userData:GetAsync("Spanner", callBack)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="SaveSpanner" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local userData = _DataStorageService:GetUserDataStorage(self.Entity.PlayerComponent.UserId)
+local callBack = function(e,k)
+	log(k.." 값이 저장되었습니다.")
+end
+userData:SetAsync("Spanner", tostring(self.spannerNum), callBack)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddSpanner" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.spannerNum = self.spannerNum + 1
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

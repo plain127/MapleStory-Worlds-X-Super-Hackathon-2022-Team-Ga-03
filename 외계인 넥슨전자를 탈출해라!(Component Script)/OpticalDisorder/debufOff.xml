@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="3199c04e-f1b1-41d4-a14f-ab2a672fb0ea" Language="Lua" Name="debufOff" Type="Component" Source="None" ModifyTime="2022-11-26T21:26:47.259296+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Lucid" Type="Entity" DefaultValue="9a3d7fc5-e7df-4f42-bc90-0deab422c181" SyncDirection="None" />
+  </Properties>
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity == _UserService.LocalPlayer then
+	self.Lucid.SpriteRendererComponent.FlipX = true
+	
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

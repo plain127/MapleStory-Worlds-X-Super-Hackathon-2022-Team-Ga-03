@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="41303434-482f-40b9-a40e-89f5e5b5f4ba" Language="Lua" Name="OnClickComponent_doublejump" Type="Component" Source="None" ModifyTime="2022-11-14T02:20:14.6072246+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="isVisible" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self.isVisible == true then
+	local itemEntity = _EntityService:GetEntity("d4ff2736-e00c-4427-a6b8-417d82dfd25c")
+	itemEntity:SetVisible(true, true)
+	
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTouchEvent" EventName="TouchEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+--------------------------------------------------------
+self.isVisible = true
+log("Item Drop")
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

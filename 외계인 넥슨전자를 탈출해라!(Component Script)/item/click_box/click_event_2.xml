@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="218e73c4-7039-47c9-9423-d3c87926f439" Language="Lua" Name="click_event_2" Type="Component" Source="None" ModifyTime="2022-10-06T07:36:39.6963146+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="SpawnByEntity" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local entity = _EntityService:GetEntityByPath("/maps/map04_은서/Item_eat")
+local name = entity.Name .. "Copy"
+local spawnPosition = Vector3(0,0,0)
+
+local spawnEntity = _SpawnService:SpawnByEntity(entity, name, spawnPosition)
+if isvalid(spawnEntity) == false then log("스폰실패") end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if key == KeyboardKey.Z then
+	log("Z버튼 클릭")
+	self:SpawnByEntity()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

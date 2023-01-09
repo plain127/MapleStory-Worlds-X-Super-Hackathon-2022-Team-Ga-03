@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="28a9a24b-e21f-4010-a416-544b56d8dbcb" Language="Lua" Name="Lv3UIComponent" Type="Component" Source="None" ModifyTime="2022-11-20T01:36:41.9550882+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Gear" Type="Component" DefaultValue="6db5da40-c6f9-4a5e-b82b-3954e6701e9a:TextComponent" SyncDirection="None" />
+    <CodeBlockProperty Name="Spanner" Type="Component" DefaultValue="c55ebd68-73a0-4a21-adf2-98dbb54d8541:TextComponent" SyncDirection="None" />
+    <CodeBlockProperty Name="IronPlate" Type="Component" DefaultValue="dd03059d-59ff-4212-8c3c-dec979d38537:TextComponent" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.Gear.Text = tostring("X  "..math.floor(self.Entity.GetGearComponent.gearNum))
+self.Spanner.Text = tostring("X  "..math.floor(self.Entity.GetSpannerComponent.spannerNum))
+self.IronPlate.Text = tostring("X  "..math.floor(self.Entity.GetIronPlateComponent.ironPlateNum))
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

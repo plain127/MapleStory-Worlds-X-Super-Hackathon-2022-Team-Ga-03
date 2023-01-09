@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="9b683c93-0874-44ec-b7ab-1cda78ea804c" Language="Lua" Name="LucidDirectionComponent" Type="Component" Source="None" ModifyTime="2022-11-26T21:11:07.289937+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="Duration" Type="number" DefaultValue="0" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self.Duration == nil then self.Duration = 0 end
+self.Duration = self.Duration +delta
+
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnMapEnter" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="enteredMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.Entity.SpriteRendererComponent.FlipX = false
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

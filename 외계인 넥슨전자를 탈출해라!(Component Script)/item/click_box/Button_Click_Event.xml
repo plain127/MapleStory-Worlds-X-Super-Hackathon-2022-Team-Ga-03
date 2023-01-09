@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="2f0a90bf-d960-4c77-b20e-1537e310ca9f" Language="Lua" Name="Button_Click_Event" Type="Component" Source="None" ModifyTime="2022-10-05T21:58:50.2605142+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="itemshow" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="SpawnByModelId" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local id = "21cb3b27-a4a4-41fc-8a3d-230968f919b6"
+local name = "mission_item"
+local spawnPosition = Vector3() --캐릭터의 x좌료 +3위치에
+local sp = Vector3(0,0,0)
+local parent = _EntityService:GetEntityByPath("/maps/map04_은서") 
+
+local spawnedEntity = _SpawnService:SpawnByModelId(id, name, spawnPosition, parent)
+if isvalid(spawnedEntity) == false then log("스폰 실패") end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if key == KeyboardKey.Z then
+	log("Z버튼 클릭")
+	self:SpawnByModelId()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

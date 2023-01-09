@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="bc0fffe0-de95-4fe0-b3a6-66474f20dec1" Language="Lua" Name="skillGetUI" Type="Component" Source="None" ModifyTime="2022-11-25T22:13:21.4077133+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+local r = _EntityService:GetEntityByPath("/ui/DefaultGroup/getSkillUI")
+--------------------------------------------------------
+if TriggerBodyEntity == _UserService.LocalPlayer then
+	r:SetEnable(true)
+	r:SetVisible(true)
+	wait(3)
+	r:SetVisible(false)
+	r:SetEnable(false)
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

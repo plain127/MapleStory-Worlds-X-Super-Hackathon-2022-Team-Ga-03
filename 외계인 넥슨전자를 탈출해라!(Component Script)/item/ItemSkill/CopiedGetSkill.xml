@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="f60a7b1f-0604-4e66-b40b-2a387c86d68d" Language="Lua" Name="CopiedGetSkill" Type="Component" Source="None" ModifyTime="2022-11-27T05:30:20.91549+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="skillQ" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="skillW" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="skillE" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="skillR" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="AddSkillQ" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.skillQ = true
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddSkillW" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.skillW = true
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddSkillE" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.skillE = true
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddSkillR" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.skillR = true
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+local r = _EntityService:GetEntityByPath("/ui/DefaultGroup/fakeUI")
+--------------------------------------------------------
+
+if self.skillR ~= false then
+	if key == KeyboardKey.R then
+    		_EffectService:PlayEffectAttached("2092f5ec9a654cdfaa7dc453b33a5e69",_UserService.LocalPlayer,Vector3(0,0,0), 0, Vector3(1,1,1), false)
+		wait(4)
+		_UserService.LocalPlayer.StateComponent:ChangeState("DEAD")
+		r:SetEnable(true)
+		r:SetVisible(true)
+		wait(5)
+		r:SetEnable(false,false)
+		r:SetVisible(false,false)
+		_TeleportService:TeleportToEntityPath(self.Entity,"/maps/오프닝")
+		_UserService.LocalPlayer.StateComponent:ChangeState("IDLE")
+		self.skillR = false
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

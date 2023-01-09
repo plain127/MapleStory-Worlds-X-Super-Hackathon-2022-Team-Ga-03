@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="4e82756a-b463-4132-af4a-3ee107a310c6" Language="Lua" Name="Lv1CreatePortal" Type="Component" Source="None" ModifyTime="2022-11-27T03:26:55.1825069+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="max" Type="number" DefaultValue="5" SyncDirection="All" />
+    <CodeBlockProperty Name="toastOnce" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local myPlayerEntity = _UserService.LocalPlayer
+local foodNum = myPlayerEntity.GetFoodComponent.foodNum
+
+if foodNum == self.max then
+	local itemEntity = _EntityService:GetEntity("bb40dd39-dca5-43b4-b931-45c28132b60b")
+	itemEntity:SetVisible(true, true)
+	itemEntity:SetEnable(true, true)
+	
+	local toast = _EntityService:GetEntityByPath("/ui/ToastGroup/Toast_portal")
+	toast:SetEnable(true)
+	toast:SetVisible(true)
+	
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnEndPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local toastGroup = _EntityService:GetEntityByPath("/ui/ToastGroup")
+toastGroup:SetEnable(false)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

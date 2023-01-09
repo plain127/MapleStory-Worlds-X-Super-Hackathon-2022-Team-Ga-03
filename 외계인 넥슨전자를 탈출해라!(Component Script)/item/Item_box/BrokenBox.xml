@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="3000c763-63cb-4e45-b367-7e3ef90a6d96" Language="Lua" Name="BrokenBox" Type="StateType" Source="None" ModifyTime="2022-11-19T02:05:51.9217194+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="exitFlag" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="timerId" Type="number" DefaultValue="0" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnEnter" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.exitFlag = false
+self.timerId = _TimerService:SetTimerOnce(function() self.exitFlag = true end, 1.1)
+
+local spriteRenderer = self.ParentComponent.Entity.SpriteRendererComponent
+spriteRenderer.SpriteRUID = "76815f621e354f57b5adb5b9faaf9eb3"
+
+_TimerService:SetTimerOnce(function()
+	_SpawnService:SpawnByModelId("model://itemasset", "Item",
+self.ParentComponent.Entity.TransformComponent.Position + Vector3(0,0.12,0),
+self.ParentComponent.Entity.Parent)
+end, 0.21)
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnConditionCheck" ExecSpace="All">
+      <Return Type="boolean" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="nextStateName" Type="string" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+return self.exitFlag
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnExit" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.ParentComponent.Entity.SpriteRendererComponent.SpriteRUID =
+"b871399ae18d41c4b76c2ae79feefa7d"
+_TimerService:ClearTimer(self.timerId)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

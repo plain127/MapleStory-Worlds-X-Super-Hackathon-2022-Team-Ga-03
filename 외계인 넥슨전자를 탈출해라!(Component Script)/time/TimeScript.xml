@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="87a20314-23e5-489e-92fd-f93497e0c21e" Language="Lua" Name="TimeScript" Type="Component" Source="None" ModifyTime="2022-11-26T20:57:03.223062+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="time" Type="number" DefaultValue="60" SyncDirection="None" />
+    <CodeBlockProperty Name="text" Type="Component" DefaultValue="d892485e-ff3a-4c12-be23-cc32a706f742:TextComponent" SyncDirection="None" />
+    <CodeBlockProperty Name="sec" Type="number" DefaultValue="0" SyncDirection="None" />
+    <CodeBlockProperty Name="count" Type="boolean" DefaultValue="true" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self.count == false then
+	return
+end
+
+self.time = self.time - delta
+
+local sec = math.floor(self.time)
+
+if self.sec ~= sec then
+	self.sec = sec
+	self:SetTime()
+	
+	if self.sec == 0 then
+		self.count = false
+		self.Entity.TriggerComponent.Enable = false
+		self.Entity.StateComponent:ChangeState('DEAD')
+		wait(2)
+		self.Entity.StateComponent:ChangeState('IDLE')
+		self.Entity.TriggerComponent.Enable = true
+		self.time = 90
+		self.count = true
+		self:OnUpdate()	
+	end
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="SetTime" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local m = (self.sec/60)%60
+local s = self.sec%60
+
+self.text.Text = string.format("남은시간 %02d:%02d",m,s)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

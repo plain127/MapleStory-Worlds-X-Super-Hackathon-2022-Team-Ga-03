@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="f7c83ad2-ad49-4556-9167-3c247ab19608" Language="Lua" Name="clean1" Type="Component" Source="None" ModifyTime="2022-11-26T21:34:27.0975371+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="tableName" Type="string" DefaultValue="&quot;clean1&quot;" SyncDirection="None" />
+    <CodeBlockProperty Name="count" Type="number" DefaultValue="0" SyncDirection="None" />
+    <CodeBlockProperty Name="npcTalkData" Type="any" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="uiNameEntity" Type="Entity" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="uiMessageEntity" Type="Entity" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="uiTalkPanel" Type="Entity" DefaultValue="f43d0578-fe46-44a7-af56-d1179885bca8" SyncDirection="None" />
+    <CodeBlockProperty Name="uiPortraitEntity" Type="Entity" DefaultValue="nil" SyncDirection="None" />
+    <CodeBlockProperty Name="player1" Type="string" DefaultValue="&quot;&quot;" SyncDirection="All" />
+    <CodeBlockProperty Name="checkingOne" Type="boolean" DefaultValue="false" SyncDirection="None" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="ShowNextText" ExecSpace="All">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+
+	--해당 npctalk컴포넌트를 duplicate하고, 
+	-- tablename에 각각 대화창을 구성하는 dataset이름을 추가하면됨. 
+	if _DataService:GetTable(self.tableName) == nil then
+		log("올바른 테이블명이 아닙니다. 다시 확인해주세요. 입력된 테이블 명 : "..self.tableName)
+		return
+	end
+
+	--플레이어 이름출력하려면 string player1 + talkpanel경로 추가 해야함
+	--그냥 npc이름만 출력하려면 string player1지우고, talkPanel경로도 제거, 아래코드도 수정
+	local isNameEnable = false
+	local isPortraitEnable = false
+
+	-- GetRowCount() 함수는 테이블의 Row(행) 갯수를 가져옴
+	local rowCount = self.npcTalkData:GetRowCount()
+
+	if rowCount < self.count then
+		-- rowCount 보다 self.count가 큰 경우 -> 대화가 끝남
+		-- 대화가 끝나면 대화창을 닫아주고 self.count를 1로 리셋시켜줌
+		-- self.count 1로 초기화 안해주면 대화 프로세스 한번 끝나면 다시 대화창 안열림
+		self.uiTalkPanel.Enable = false
+		self.count = 1
+		return
+	end
+--
+	local message = self.npcTalkData:GetCell(self.count, "text")
+	--log("엔피씨 대사 : "..message)
+
+	if message == nil then
+		self.uiTalkPanel.Enable = false
+		self.count =1
+		return
+	else
+		self.uiTalkPanel.Enable = true
+		self.uiMessageEntity.TextComponent.Text = message
+	end
+
+	local name = self.npcTalkData:GetCell(self.count, "name")
+	local portrait = self.npcTalkData:GetCell(self.count, "portrait")
+
+	--if name ~= "" then
+	--isNameEnable = true
+	--    self.uiNameEntity.TextComponent.Text = name
+	--name
+
+	if name ~= "" then
+		isNameEnable = true
+		if name == "player1" then
+			self.player1 = _UserService.LocalPlayer.NameTagComponent.Name
+			name = self.player1
+		end
+		self.uiNameEntity.TextComponent.Text = name
+	end
+	--위에거로 하면 그냥 npc출력, 아래거로하면 player이름 출력
+
+	if portrait ~= "" then
+		isPortraitEnable = true
+		self.uiPortraitEntity.SpriteGUIRendererComponent.ImageRUID = portrait
+	end
+
+	self.uiNameEntity.Enable = isNameEnable
+	self.uiPortraitEntity.Enable = isPortraitEnable
+
+	self.count = self.count + 1
+
+
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnMapLeave" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="leftMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+self.uiTalkPanel.Enable = false
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnInitialize" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local uiInsert = _EntityService:GetEntity("68b7c298-1965-44f3-b11d-df9ef7f265aa")
+uiInsert.UIInsert_remove1:OnBeginPlay()
+self.count = 1 --대화창을 시작하기위한 변수
+self.checkingOne = true --트리거대화창을 한번만 보여주기위한 변수
+self.npcTalkData = _DataService:GetTable(self.tableName)
+self.uiNameEntity = _EntityService:GetEntityByPath("/ui/NPCTalk/TalkPanel/Name")
+self.uiMessageEntity = _EntityService:GetEntityByPath("/ui/NPCTalk/TalkPanel/Text")
+self.uiTalkPanel = _EntityService:GetEntityByPath("/ui/NPCTalk/TalkPanel")
+self.uiPortraitEntity = _EntityService:GetEntityByPath("/ui/NPCTalk/TalkPanel/Portrait")
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if (key == KeyboardKey.Z) then
+	if (self.count >= 2) then
+		self:ShowNextText()
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity == _UserService.LocalPlayer and self.checkingOne == true then
+	if (self.count == 1) then 
+		self:ShowNextText()
+		self.checkingOne = false --한번출력후 false로 바꾸어 두번출력을 방지
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleScreenTouchEvent" EventName="ScreenTouchEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TouchPoint = event.TouchPoint
+--------------------------------------------------------
+if self.count >= 2 then
+	self:ShowNextText()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

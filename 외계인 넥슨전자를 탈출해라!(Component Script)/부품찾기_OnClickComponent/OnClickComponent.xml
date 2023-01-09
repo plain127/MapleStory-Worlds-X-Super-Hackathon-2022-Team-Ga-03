@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="37e20c7a-760f-44bf-9286-b637f44fae02" Language="Lua" Name="OnClickComponent" Type="Component" Source="None" ModifyTime="2022-11-19T21:02:33.4395427+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="isVisible" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="isEnable" Type="boolean" DefaultValue="false" SyncDirection="All" />
+    <CodeBlockProperty Name="justOneTime" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+if self.isVisible == true then
+	local itemEntity = _EntityService:GetEntity("8e8efe3e-611a-4d0d-b3cb-73694d2990e5")
+	itemEntity:SetVisible(true, true)
+end
+if (self.isEnable == true and self.justOneTime == false) then
+	local itemEntity = _EntityService:GetEntity("8e8efe3e-611a-4d0d-b3cb-73694d2990e5")
+	itemEntity:SetEnable(true, true)
+	self.justOneTime = true
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTouchEvent" EventName="TouchEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+--------------------------------------------------------
+self.isVisible = true
+log("Item Visible")
+self.isEnable = true
+log("Item Enable")
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

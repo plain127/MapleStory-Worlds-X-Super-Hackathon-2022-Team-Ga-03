@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="2d981e8a-b055-4a6f-a36b-abf3e63385df" Language="Lua" Name="TimerInvisible" Type="Component" Source="None" ModifyTime="2022-11-27T04:48:03.1729134+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods />
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleEntityMapChangedEvent" EventName="EntityMapChangedEvent" Target="self" Scope="Client">
+      <Code><![CDATA[
+-- Parameters
+local NewMap = event.NewMap
+local OldMap = event.OldMap
+local Entity = event.Entity
+local Timer = _EntityService:GetEntityByPath("/ui/DefaultGroup/TimeUI")
+--------------------------------------------------------
+
+if (NewMap.Id=="68b7c298-1965-44f3-b11d-df9ef7f265aa") then --치우기Lv1
+	self.Entity.TimeScript.time = 90
+	Timer:SetEnable(true)
+
+elseif (NewMap.Id=="5dbd6f22-ed0e-47fb-8171-ad2970b3054e") then --치우기Lv2
+	self.Entity.TimeScript.time = 90
+	Timer:SetEnable(true)
+		
+elseif (NewMap.Id=="75e3dd60-119a-4484-8afa-78b83005157b") then --치우기Lv3
+	self.Entity.TimeScript.time = 100
+	Timer:SetEnable(true)
+
+elseif (NewMap.Id=="165bb027-2d9c-47b6-8aab-a88c13327d76") then  --찾기lv1
+	self.Entity.TimeScript.time = 60
+	Timer:SetEnable(true)
+
+elseif (NewMap.Id=="84885290-bd81-452c-b448-9a24718afbca") then --찾기lv2
+	self.Entity.TimeScript.time = 90
+	Timer:SetEnable(true)
+
+elseif (NewMap.Id=="8936e44e-8648-4f1f-b856-2726348231d5") then --찾기lv3
+	self.Entity.TimeScript.time = 150
+	Timer:SetEnable(true)		
+
+else
+	Timer:SetEnable(false)
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

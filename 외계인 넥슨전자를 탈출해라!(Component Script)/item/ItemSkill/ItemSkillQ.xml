@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="8b532357-5d89-47a2-ac27-fc76da1ab60b" Language="Lua" Name="ItemSkillQ" Type="Component" Source="None" ModifyTime="2022-11-08T19:59:06.1484181+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties>
+    <CodeBlockProperty Name="action" Type="boolean" DefaultValue="false" SyncDirection="All" />
+  </Properties>
+  <Methods>
+    <CodeBlockMethod Name="OnMapEnter" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="enteredMap" Type="any" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+
+local item = _EntityService:GetEntitiesByTag("Item")
+for key, value in pairs(item) do
+	value.Enable = true
+end
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ServerOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+self.Entity.TagComponent:AddTag("Item")
+]]></Code>
+    </CodeBlockMethod>
+    <CodeBlockMethod Name="AddSkill" ExecSpace="Server">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments />
+      <Code><![CDATA[
+self.action = true
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleTriggerEnterEvent" EventName="TriggerEnterEvent" Target="self" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local TriggerBodyEntity = event.TriggerBodyEntity
+--------------------------------------------------------
+if TriggerBodyEntity.Id == _UserService.LocalPlayer.Id then
+	self.Entity.Enable = false
+	TriggerBodyEntity.ItemSkillQ:AddSkill()	
+	TriggerBodyEntity.GetItem:SaveItem()
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+    <CodeBlockEntityEventHandler Name="HandleKeyDownEvent" EventName="KeyDownEvent" Target="service:InputService" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local key = event.key
+--------------------------------------------------------
+if self.action == true then
+	if key == KeyboardKey.Q then
+    		_EffectService:PlayEffectAttached("f396262ddb6e4d5581360496bb4e9f86",_UserService.LocalPlayer,Vector3(0,0,0), 0, Vector3(1,1,1), false)
+	end
+end
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>

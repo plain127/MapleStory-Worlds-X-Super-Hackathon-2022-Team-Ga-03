@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="304b4c7e-fd32-47e3-8c15-9e76fe0f4137" Language="Lua" Name="dontMove_ending3" Type="Component" Source="None" ModifyTime="2022-11-27T04:21:03.845181+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnUpdate" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Arguments>
+        <CodeBlockProperty Name="delta" Type="number" SyncDirection="None" />
+      </Arguments>
+      <Code><![CDATA[
+local counter = _EntityService:GetEntity("36669503-d690-484e-a412-d7de70cc61b5")
+local player = _UserService.LocalPlayer
+
+if counter.end333.count == 1.0 then
+	player.MovementComponent.InputSpeed = 2
+else
+	player.MovementComponent.InputSpeed = 0
+end
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers />
+</CodeBlockFile>

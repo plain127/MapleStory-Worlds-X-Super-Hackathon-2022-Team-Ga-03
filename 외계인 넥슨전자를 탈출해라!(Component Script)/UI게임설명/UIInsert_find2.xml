@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeBlockFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Id="d6cbacc6-7b65-4351-b1ee-5350c56780ec" Language="Lua" Name="UIInsert_find2" Type="Component" Source="None" ModifyTime="2022-11-26T21:37:18.1963411+09:00">
+  <CoreVersion Major="0" Minor="2" />
+  <ScriptVersion Major="1" Minor="0" />
+  <Description />
+  <Properties />
+  <Methods>
+    <CodeBlockMethod Name="OnBeginPlay" ExecSpace="ClientOnly">
+      <Return Type="void" SyncDirection="None" />
+      <Code><![CDATA[
+local infoPopUp = _EntityService:GetEntityByPath("/ui/PopupGroup/PopupBack/PopupPanel_찾기2")
+local popUp = _EntityService:GetEntityByPath("/ui/PopupGroup")
+local all = _EntityService:GetEntitiesByPath("/maps/찾기_LV2")
+for i, entity in pairs(all) do
+	entity:SetEnable(false)	
+end	
+popUp:SetEnable(true)
+infoPopUp:SetEnable(true)
+infoPopUp:SetVisible(true)
+]]></Code>
+    </CodeBlockMethod>
+  </Methods>
+  <EntityEventHandlers>
+    <CodeBlockEntityEventHandler Name="HandleButtonClickEvent" EventName="ButtonClickEvent" Target="entity:5207f30d-b3f9-4405-a96c-e74320b9a5ec" Scope="All">
+      <Code><![CDATA[
+-- Parameters
+local Entity = event.Entity
+local infoPopUp = _EntityService:GetEntityByPath("/ui/PopupGroup/PopupBack/PopupPanel_찾기2")
+local popUp = _EntityService:GetEntityByPath("/ui/PopupGroup")
+--------------------------------------------------------
+popUp:SetEnable(false)
+infoPopUp:SetEnable(false)
+infoPopUp:SetVisible(false)
+local all = _EntityService:GetEntitiesByPath("/maps/찾기_LV2")
+for i, entity in pairs(all) do
+	entity:SetEnable(true)	
+end	
+]]></Code>
+    </CodeBlockEntityEventHandler>
+  </EntityEventHandlers>
+</CodeBlockFile>
